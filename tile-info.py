@@ -24,6 +24,7 @@ if __name__ == "__main__" :
     parser.add_option("-y", type="int", dest="y")
     parser.add_option("-t", type="string", dest="tile_address", default=None)
     parser.add_option("-l", "--layer", dest="layer", default=None)
+    parser.add_option("-p", "--plot", action="store_true", dest="plot", default=False)
     parser.add_option("-v", "--verbose", action="store_true", dest="verbose")
     (options, args) = parser.parse_args()
     
@@ -69,6 +70,10 @@ if __name__ == "__main__" :
                     break
         else:
             print(json.dumps(vtile.to_geojson(lonlat=True, layer_names=True), indent=4))
+            if options.plot:
+                # plot all the layers if -p or --plot given
+                import plotting
+                plotting.plot_geojson(vtile.to_geojson(lonlat=True, layer_names=True))
 
         if options.verbose:
             for layer in tile.layers:
